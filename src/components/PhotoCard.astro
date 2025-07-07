@@ -27,10 +27,14 @@ const { photo } = Astro.props;
 // パス解決ヘルパー関数
 function resolveImagePath(imagePath: string): string {
   const baseUrl = import.meta.env.BASE_URL || '/';
-  if (imagePath.startsWith('/')) {
-    return `${baseUrl}${imagePath.slice(1)}`.replace(/\/+/g, '/');
-  }
-  return `${baseUrl}${imagePath}`.replace(/\/+/g, '/');
+  // ベースURLの末尾がスラッシュで終わっているか確認
+  const normalizedBase = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  // パスの先頭がスラッシュの場合は削除
+  const normalizedPath = imagePath.startsWith('/') ? imagePath.slice(1) : imagePath;
+  // パスを結合し、重複スラッシュを削除
+  const fullPath = `${normalizedBase}${normalizedPath}`.replace(/\/+/g, '/');
+  // URLエンコードを適用（スペース等の特殊文字対応）
+  return fullPath.split('/').map(segment => encodeURIComponent(segment)).join('/');
 }
 ---
 

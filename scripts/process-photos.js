@@ -37,7 +37,9 @@ async function processPhotos() {
   
   for (const filePath of files) {
     try {
-      const filename = path.parse(filePath).name;
+      const originalFilename = path.parse(filePath).name;
+      // ファイル名を正規化（スペースをアンダースコアに、特殊文字を削除）
+      const filename = originalFilename.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '');
       
       // 既に処理済みかチェック
       if (existingPhotos.some(p => p.filename === filename)) {
@@ -45,7 +47,7 @@ async function processPhotos() {
         continue;
       }
 
-      console.log(`🔄 Processing: ${filename}`);
+      console.log(`🔄 Processing: ${originalFilename} -> ${filename}`);
       
       const photoData = await processPhoto(filePath, filename);
       processedPhotos.push(photoData);
