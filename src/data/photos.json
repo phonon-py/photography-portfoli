@@ -1,0 +1,26 @@
+[
+  {
+    "id": "bv53wo59t",
+    "filename": "DSCF0721 1",
+    "src": "images/DSCF0721 1.jpg",
+    "srcWebP": "images/DSCF0721 1.webp",
+    "thumbnail": "images/thumbs/DSCF0721 1.jpg",
+    "alt": "DSCF0721 1",
+    "camera": "FUJIFILM X-T50",
+    "lens": "XF16-55mmF2.8 R LM WR II",
+    "settings": {
+      "aperture": "f/4",
+      "shutter": "1/1000s",
+      "iso": 500,
+      "focalLength": "55mm"
+    },
+    "filmSimulation": "PROVIA/Standard",
+    "dimensions": {
+      "width": 4900,
+      "height": 6126
+    },
+    "date": "2025-07-07T23:38:39.901Z",
+    "tags": [],
+    "processed": "2025-07-07T23:38:39.903Z"
+  }
+]

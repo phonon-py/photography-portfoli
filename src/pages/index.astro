@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
+
+// 写真データ読み込み
+let photos = [];
+try {
+  const photosModule = await import('../data/photos.json');
+  photos = photosModule.default || [];
+} catch (e) {
+  console.log('No photos found');
+}
+
+const latestPhotos = photos.slice(0, 6);
+---
+
+<Layout title="Photography Portfolio | FUJIFILM X-T50">
+  <!-- Hero Section -->
+  <section class="relative h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800">
+    <div class="text-center px-6">
+      <h1 class="text-5xl md:text-7xl font-light tracking-wider mb-6">
+        Street Chronicles
+      </h1>
+      <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+        日常に潜む美しい瞬間をFUJIFILM X-T50で切り取る
+      </p>
+      
+      <div class="flex flex-wrap justify-center gap-4 mb-8 text-sm font-mono text-gray-400">
+        <span>📷 FUJIFILM X-T50</span>
+        <span>🔍 XF16-55mm f/2.8 II</span>
+        <span>🎨 Capture One</span>
+      </div>
+      
+      <a href="#gallery" class="inline-block px-8 py-4 border border-white/30 hover:bg-white hover:text-black transition-all duration-300">
+        VIEW WORK
+      </a>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="py-20 bg-black">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl font-light text-center mb-12 text-white">Latest Work</h2>
+      {photos.length > 0 ? (
+        <PhotoGallery photos={latestPhotos} />
+      ) : (
+        <div class="text-center text-gray-400">
+          <p>写真を追加するには:</p>
+          <code class="block mt-2 text-sm">npm run add-photo /path/to/photo.jpg</code>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Instagram CTA -->
+  <section class="py-20 bg-gradient-to-br from-purple-900/20 to-blue-900/20">
+    <div class="container mx-auto px-6 text-center">
+      <h2 class="text-3xl font-light mb-6 text-white">Follow the Journey</h2>
+      <p class="text-gray-300 mb-8">FUJIFILMコミュニティとの交流をInstagramで</p>
+      <a href="https://instagram.com/yourusername" 
+         class="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-300 rounded-lg">
+        📸 Follow on Instagram
+      </a>
+    </div>
+  </section>
+</Layout>
