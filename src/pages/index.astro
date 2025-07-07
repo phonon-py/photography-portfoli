@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import PhotoGallery from '../components/PhotoGallery.astro';
+import DebugInfo from '../components/DebugInfo.astro';
 
 // 写真データ読み込み
 let photos = [];
@@ -63,4 +64,7 @@ const latestPhotos = photos.slice(0, 6);
       </a>
     </div>
   </section>
+
+  <!-- Debug Info (本番では削除) -->
+  {!import.meta.env.PROD && <DebugInfo />}
 </Layout>
