@@ -65,9 +65,6 @@ function resolveImagePath(imagePath: string): string {
         {photo.settings.focalLength && <div>📏 {photo.settings.focalLength}</div>}
       </div>
       
-      {photo.filmSimulation && (
-        <div class="text-xs text-orange-300 mb-2">🎨 {photo.filmSimulation}</div>
-      )}
       
       <div class="flex justify-between text-xs text-gray-400">
         <span>{new Date(photo.date).toLocaleDateString('ja-JP')}</span>

@@ -4,22 +4,32 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+        'display': ['Inter Display', 'Inter', 'system-ui', 'sans-serif'],
         'sans': ['Inter', 'system-ui', 'sans-serif'],
         'mono': ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        'fuji': {
-          50: '#fdf2f8',
-          100: '#fce7f3',
-          200: '#fbcfe8',
-          300: '#f9a8d4',
-          400: '#f472b6',
-          500: '#ec4899',
-          600: '#db2777',
-          700: '#be185d',
-          800: '#9d174d',
-          900: '#831843',
+        'stone': {
+          50: '#fafaf9',
+          100: '#f5f5f4',
+          200: '#e7e5e4',
+          300: '#d6d3d1',
+          400: '#a8a29e',
+          500: '#78716c',
+          600: '#57534e',
+          700: '#44403c',
+          800: '#292524',
+          900: '#1c1917',
+          950: '#0c0a09',
         }
+      },
+      letterSpacing: {
+        'tighter': '-0.04em',
+        'super-tight': '-0.08em',
+      },
+      lineHeight: {
+        'tight': '0.9',
+        'super-tight': '0.8',
       }
     },
   },

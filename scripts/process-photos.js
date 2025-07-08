@@ -111,7 +111,6 @@ async function processPhoto(inputPath, filename) {
       iso: exif.Photo?.ISOSpeedRatings || 400,
       focalLength: exif.Photo?.FocalLength ? `${exif.Photo.FocalLength}mm` : null,
     },
-    filmSimulation: exif.Fujifilm?.FilmMode || 'PROVIA/Standard',
     dimensions: {
       width: metadata.width,
       height: metadata.height,
