@@ -33,20 +33,32 @@ photos.sort((a, b) => new Date(a.date) - new Date(b.date));
   </nav>
 
   <!-- Hero Section -->
-  <section class="relative min-h-screen flex items-center justify-center px-6 md:px-8">
-    <div class="max-w-4xl mx-auto text-center">
-      <h1 class="font-display font-light text-6xl md:text-8xl lg:text-9xl leading-super-tight tracking-super-tight mb-8">
+  <section class="relative min-h-screen flex items-center justify-center px-6 md:px-8 overflow-hidden">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src={import.meta.env.PROD ? `/photography-portfoli/images/DSCF0283.jpg` : `/images/DSCF0283.jpg`}
+        alt="Background"
+        class="w-full h-full object-cover"
+      />
+      <!-- Dark overlay for text readability -->
+      <div class="absolute inset-0 bg-black/60"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+      <h1 class="font-display font-light text-6xl md:text-8xl lg:text-9xl leading-super-tight tracking-super-tight mb-8 text-white drop-shadow-2xl">
         Photon
         <br />
         Diary
       </h1>
       
-      <p class="text-lg md:text-xl text-stone-400 max-w-2xl mx-auto mb-12 leading-relaxed">
+      <p class="text-lg md:text-xl text-stone-200 max-w-2xl mx-auto mb-12 leading-relaxed drop-shadow-lg">
         Street Photographer based in Aomori — 何気ない日常の中に潜む美しい瞬間を切り取る
       </p>
       
       <a href="#work" 
-         class="inline-block text-sm font-medium tracking-wide uppercase border border-stone-700 px-8 py-4 hover:bg-stone-900 transition-all duration-300">
+         class="inline-block text-sm font-medium tracking-wide uppercase border border-white/70 text-white px-8 py-4 hover:bg-white/20 backdrop-blur-sm transition-all duration-300">
         View Work
       </a>
     </div>
