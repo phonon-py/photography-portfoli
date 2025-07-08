@@ -1,5 +1,51 @@
 [
   {
+    "id": "z6sse3ld6",
+    "filename": "DSCF9974",
+    "src": "images/DSCF9974.jpg",
+    "srcWebP": "images/DSCF9974.webp",
+    "thumbnail": "images/thumbs/DSCF9974.jpg",
+    "alt": "DSCF9974",
+    "camera": "FUJIFILM X-T50",
+    "lens": "XF16-55mmF2.8 R LM WR II",
+    "settings": {
+      "aperture": "f/11",
+      "shutter": "1/60s",
+      "iso": 250,
+      "focalLength": "49.8mm"
+    },
+    "dimensions": {
+      "width": 5145,
+      "height": 6431
+    },
+    "date": "2025-07-08T01:57:54.018Z",
+    "tags": [],
+    "processed": "2025-07-08T01:57:54.020Z"
+  },
+  {
+    "id": "9urv1nigf",
+    "filename": "DSCF0100",
+    "src": "images/DSCF0100.jpg",
+    "srcWebP": "images/DSCF0100.webp",
+    "thumbnail": "images/thumbs/DSCF0100.jpg",
+    "alt": "DSCF0100",
+    "camera": "FUJIFILM X-T50",
+    "lens": "XF16-55mmF2.8 R LM WR II",
+    "settings": {
+      "aperture": "f/9",
+      "shutter": "1/50s",
+      "iso": 400,
+      "focalLength": "36.2mm"
+    },
+    "dimensions": {
+      "width": 4761,
+      "height": 5951
+    },
+    "date": "2025-07-08T01:57:18.145Z",
+    "tags": [],
+    "processed": "2025-07-08T01:57:18.146Z"
+  },
+  {
     "id": "6syvh3be7",
     "filename": "DSCF0283",
     "src": "images/DSCF0283.jpg",
