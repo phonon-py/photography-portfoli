@@ -58,14 +58,16 @@ const latestPhotos = photos.slice(0, 6);
       </h2>
       
       {photos.length > 0 ? (
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 md:gap-2">
-          {photos.map((photo) => (
-            <div class="group relative aspect-[4/5] overflow-hidden bg-stone-900">
+        <div id="masonry-grid" class="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+          <!-- Initial photos -->
+          {photos.slice(0, 3).map((photo) => (
+            <div class="photo-item break-inside-avoid mb-4 group relative overflow-hidden bg-stone-900 rounded-lg">
               <img
                 src={`${import.meta.env.BASE_URL}${photo.src}`.replace(/\/+/g, '/')}
                 alt={photo.alt}
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
+                onerror="console.log('Failed to load:', this.src)"
               />
               
               <!-- Minimal overlay with just essential info -->
@@ -107,4 +109,150 @@ const latestPhotos = photos.slice(0, 6);
 
   <!-- Debug Info (本番では削除) -->
   {!import.meta.env.PROD && <DebugInfo />}
+
+  <script define:vars={{ photos, baseUrl: import.meta.env.BASE_URL }}>
+    // Dynamic infinite scroll portfolio
+    let currentPhotoIndex = 3;
+    const usedPhotos = new Set();
+    let isLoading = false;
+    
+    // Initialize used photos
+    photos.slice(0, 3).forEach((photo, index) => {
+      usedPhotos.add(index);
+    });
+    
+    function getRandomPhoto() {
+      const availableIndices = [];
+      for (let i = 0; i < photos.length; i++) {
+        if (!usedPhotos.has(i)) {
+          availableIndices.push(i);
+        }
+      }
+      
+      if (availableIndices.length === 0) {
+        // Reset if all photos used
+        usedPhotos.clear();
+        photos.slice(0, 3).forEach((photo, index) => {
+          usedPhotos.add(index);
+        });
+        return getRandomPhoto();
+      }
+      
+      const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+      usedPhotos.add(randomIndex);
+      return photos[randomIndex];
+    }
+    
+    function createPhotoElement(photo) {
+      const photoDiv = document.createElement('div');
+      photoDiv.className = 'photo-item break-inside-avoid mb-4 group relative overflow-hidden bg-stone-900 rounded-lg opacity-0 translate-y-8 transition-all duration-700';
+      
+      const img = document.createElement('img');
+      img.src = `${baseUrl}${photo.src}`.replace(/\/+/g, '/');
+      img.alt = photo.alt;
+      img.className = 'w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105';
+      img.loading = 'lazy';
+      img.onerror = () => console.log('Failed to load:', img.src);
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300';
+      
+      const overlayContent = document.createElement('div');
+      overlayContent.className = 'absolute bottom-0 left-0 right-0 p-4';
+      
+      const photoInfo = document.createElement('div');
+      photoInfo.className = 'text-xs font-mono text-stone-300 space-y-1';
+      
+      const settings = document.createElement('div');
+      settings.textContent = `${photo.settings.aperture} • ${photo.settings.shutter} • ISO ${photo.settings.iso}`;
+      
+      const focalLength = document.createElement('div');
+      if (photo.settings.focalLength) {
+        focalLength.textContent = photo.settings.focalLength;
+      }
+      
+      const date = document.createElement('div');
+      date.className = 'text-stone-400';
+      date.textContent = new Date(photo.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+      
+      photoInfo.appendChild(settings);
+      if (photo.settings.focalLength) {
+        photoInfo.appendChild(focalLength);
+      }
+      photoInfo.appendChild(date);
+      
+      overlayContent.appendChild(photoInfo);
+      overlay.appendChild(overlayContent);
+      
+      photoDiv.appendChild(img);
+      photoDiv.appendChild(overlay);
+      
+      return photoDiv;
+    }
+    
+    function loadNewPhotos() {
+      if (isLoading) return;
+      isLoading = true;
+      
+      const grid = document.getElementById('masonry-grid');
+      if (!grid) return;
+      
+      // Add 2-4 random photos
+      const photosToAdd = Math.floor(Math.random() * 3) + 2;
+      
+      for (let i = 0; i < photosToAdd; i++) {
+        const photo = getRandomPhoto();
+        const photoElement = createPhotoElement(photo);
+        grid.appendChild(photoElement);
+        
+        // Animate in
+        setTimeout(() => {
+          photoElement.style.opacity = '1';
+          photoElement.style.transform = 'translateY(0)';
+        }, i * 150);
+      }
+      
+      setTimeout(() => {
+        isLoading = false;
+      }, 1000);
+    }
+    
+    // Scroll event listener
+    function handleScroll() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // Load new photos when 80% scrolled
+      if (scrollTop + windowHeight >= documentHeight * 0.8) {
+        loadNewPhotos();
+      }
+    }
+    
+    // Smooth parallax effect on scroll
+    function handleParallax() {
+      const scrolled = window.pageYOffset;
+      const heroSection = document.querySelector('section');
+      
+      if (heroSection) {
+        heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+      }
+      
+      // Add subtle movement to photo items
+      const photoItems = document.querySelectorAll('.photo-item');
+      photoItems.forEach((item, index) => {
+        const speed = 0.1 + (index % 3) * 0.05;
+        item.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    }
+    
+    // Initialize
+    window.addEventListener('scroll', () => {
+      handleScroll();
+      requestAnimationFrame(handleParallax);
+    });
+    
+    // Load some initial photos after page load
+    setTimeout(loadNewPhotos, 2000);
+  </script>
 </Layout>
