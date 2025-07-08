@@ -1,13 +1,15 @@
 # 📸 Photography Portfolio
 
-FUJIFILM X-T50で撮影したストリートフォトグラフィーポートフォリオサイト
+青森を拠点とするストリートフォトグラファーのポートフォリオサイト（Photon Log）
 
 ## 🌟 特徴
 
+- **ドラマチックなヒーロー**: 背景写真付きの印象的なランディングページ
 - **現代的なデザイン**: ダークテーマとミニマルなレイアウト
 - **高速表示**: Astroによる静的サイト生成とWebP対応
-- **レスポンシブ**: 全デバイス対応のギャラリー
+- **レスポンシブギャラリー**: タイル状レイアウトで安定した表示
 - **EXIF表示**: ホバー時にカメラ設定情報を表示
+- **コンタクト機能**: 撮影依頼やコラボレーション対応
 - **自動最適化**: 画像の自動リサイズとフォーマット変換
 - **GitHub Pages**: 完全無料でのホスティング
 
@@ -15,9 +17,10 @@ FUJIFILM X-T50で撮影したストリートフォトグラフィーポートフ
 
 **https://phonon-py.github.io/photography-portfoli**
 
-## 📸 Instagram
+## 📸 Instagram & Contact
 
-**https://www.instagram.com/photon_log/**
+- **Instagram**: https://www.instagram.com/photon_log/
+- **Email**: phn.19890918@gmail.com
 
 ## 🛠️ 技術スタック
 
@@ -142,7 +145,8 @@ export default defineConfig({
 ```
 
 ### スタイリングの変更
-`src/pages/index.astro`でヒーローセクションやテキストをカスタマイズ可能
+- `src/pages/index.astro`でヒーローセクションやテキストをカスタマイズ可能
+- ヒーロー背景画像の変更: `images/DSCF0283.jpg`を任意の画像に置き換え
 
 ### カメラ情報の変更
 `scripts/process-photos.js`の以下部分を編集:
@@ -205,6 +209,18 @@ npm run dev
 
 このプロジェクトは [ISC License](LICENSE) の下で公開されています。
 
+## 🎨 サイト構成
+
+### ページ構成
+- **Hero Section**: 背景写真付きの印象的なランディング
+- **Gallery Section**: タイル状レイアウトのポートフォリオ（日時昇順）
+- **Contact Section**: 撮影依頼・コラボレーション受付
+
+### ブランディング
+- **サイト名**: Photon Diary
+- **コンセプト**: 青森ベースのストリートフォトグラファー
+- **テーマ**: 何気ない日常の中に潜む美しい瞬間を切り取る
+
 ## 🙏 謝辞
 
 - **FUJIFILM** - X-T50カメラシステム
@@ -215,4 +231,4 @@ npm run dev
 
 ---
 
-**Built with ❤️ for photography enthusiasts**
+**Built with ❤️ for street photography enthusiasts in Aomori**
