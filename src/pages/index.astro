@@ -113,34 +113,52 @@ const latestPhotos = photos.slice(0, 6);
   <script define:vars={{ photos, baseUrl: import.meta.env.BASE_URL }}>
     // Dynamic infinite scroll portfolio
     let currentPhotoIndex = 3;
-    const usedPhotos = new Set();
+    const displayedPhotos = new Set();
     let isLoading = false;
+    let shuffledPhotos = [...photos];
     
-    // Initialize used photos
+    // Shuffle photos array
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    // Initialize with first 3 photos
     photos.slice(0, 3).forEach((photo, index) => {
-      usedPhotos.add(index);
+      displayedPhotos.add(photo.id);
     });
     
-    function getRandomPhoto() {
-      const availableIndices = [];
-      for (let i = 0; i < photos.length; i++) {
-        if (!usedPhotos.has(i)) {
-          availableIndices.push(i);
+    // Shuffle the photos once at start
+    shuffledPhotos = shuffleArray([...photos]);
+    
+    function getNextPhoto() {
+      // Find next photo not yet displayed
+      for (let i = 0; i < shuffledPhotos.length; i++) {
+        if (!displayedPhotos.has(shuffledPhotos[i].id)) {
+          displayedPhotos.add(shuffledPhotos[i].id);
+          return shuffledPhotos[i];
         }
       }
       
-      if (availableIndices.length === 0) {
-        // Reset if all photos used
-        usedPhotos.clear();
-        photos.slice(0, 3).forEach((photo, index) => {
-          usedPhotos.add(index);
-        });
-        return getRandomPhoto();
+      // If all photos used, reshuffle and start over
+      displayedPhotos.clear();
+      photos.slice(0, 3).forEach((photo) => {
+        displayedPhotos.add(photo.id);
+      });
+      shuffledPhotos = shuffleArray([...photos]);
+      
+      // Get first available photo after reset
+      for (let i = 0; i < shuffledPhotos.length; i++) {
+        if (!displayedPhotos.has(shuffledPhotos[i].id)) {
+          displayedPhotos.add(shuffledPhotos[i].id);
+          return shuffledPhotos[i];
+        }
       }
       
-      const randomIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
-      usedPhotos.add(randomIndex);
-      return photos[randomIndex];
+      return photos[0]; // fallback
     }
     
     function createPhotoElement(photo) {
@@ -197,24 +215,20 @@ const latestPhotos = photos.slice(0, 6);
       const grid = document.getElementById('masonry-grid');
       if (!grid) return;
       
-      // Add 2-4 random photos
-      const photosToAdd = Math.floor(Math.random() * 3) + 2;
+      // Add only 1 photo at a time for smooth scrolling experience
+      const photo = getNextPhoto();
+      const photoElement = createPhotoElement(photo);
+      grid.appendChild(photoElement);
       
-      for (let i = 0; i < photosToAdd; i++) {
-        const photo = getRandomPhoto();
-        const photoElement = createPhotoElement(photo);
-        grid.appendChild(photoElement);
-        
-        // Animate in
-        setTimeout(() => {
-          photoElement.style.opacity = '1';
-          photoElement.style.transform = 'translateY(0)';
-        }, i * 150);
-      }
+      // Animate in with smoother transition
+      setTimeout(() => {
+        photoElement.style.opacity = '1';
+        photoElement.style.transform = 'translateY(0)';
+      }, 100);
       
       setTimeout(() => {
         isLoading = false;
-      }, 1000);
+      }, 600);
     }
     
     // Scroll event listener
@@ -223,8 +237,8 @@ const latestPhotos = photos.slice(0, 6);
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       
-      // Load new photos when 80% scrolled
-      if (scrollTop + windowHeight >= documentHeight * 0.8) {
+      // Load new photos when 90% scrolled for smoother experience
+      if (scrollTop + windowHeight >= documentHeight * 0.9) {
         loadNewPhotos();
       }
     }
@@ -252,7 +266,8 @@ const latestPhotos = photos.slice(0, 6);
       requestAnimationFrame(handleParallax);
     });
     
-    // Load some initial photos after page load
-    setTimeout(loadNewPhotos, 2000);
+    // Load some initial photos after page load with staggered timing
+    setTimeout(loadNewPhotos, 1500);
+    setTimeout(loadNewPhotos, 3000);
   </script>
 </Layout>
