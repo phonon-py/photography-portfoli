@@ -25,6 +25,7 @@ photos.sort((a, b) => new Date(a.date) - new Date(b.date));
       </div>
       <div class="flex gap-8 text-sm font-medium">
         <a href="#work" class="hover:text-stone-300 transition-colors">Archive</a>
+        <a href="#contact" class="hover:text-stone-300 transition-colors">Contact</a>
         <a href="https://www.instagram.com/photon_log/" target="_blank" rel="noopener noreferrer" 
            class="hover:text-stone-300 transition-colors">Instagram</a>
       </div>
@@ -41,7 +42,7 @@ photos.sort((a, b) => new Date(a.date) - new Date(b.date));
       </h1>
       
       <p class="text-lg md:text-xl text-stone-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-        光の記録者として、都市の隙間に潜む美しい瞬間を切り取る
+        Street Photographer based in Tokyo — 都市の日常に潜む一瞬の詩を探して
       </p>
       
       <a href="#work" 
@@ -55,7 +56,7 @@ photos.sort((a, b) => new Date(a.date) - new Date(b.date));
   <section id="work" class="px-6 md:px-8 py-20">
     <div class="max-w-7xl mx-auto">
       <h2 class="font-display font-light text-4xl md:text-5xl tracking-tighter mb-16 text-center">
-        Visual Archive
+        Street Stories
       </h2>
       
       {photos.length > 0 ? (
@@ -92,18 +93,38 @@ photos.sort((a, b) => new Date(a.date) - new Date(b.date));
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="px-6 md:px-8 py-20 border-t border-stone-800">
+  <!-- Contact Section -->
+  <section id="contact" class="px-6 md:px-8 py-20 border-t border-stone-800">
     <div class="max-w-4xl mx-auto text-center">
-      <p class="text-stone-500 mb-4">
-        光を操る者の記録 — FUJIFILM X-T50 & XF16-55mmF2.8 R LM WR II
+      <h3 class="font-display font-light text-3xl md:text-4xl tracking-tighter mb-8">
+        Get in Touch
+      </h3>
+      <p class="text-lg text-stone-400 mb-8 leading-relaxed">
+        東京を拠点に活動するストリートフォトグラファー<br />
+        撮影依頼やコラボレーションのご相談はお気軽にどうぞ
       </p>
-      <a href="https://www.instagram.com/photon_log/" 
-         target="_blank" 
-         rel="noopener noreferrer"
-         class="text-sm font-medium tracking-wide uppercase hover:text-stone-300 transition-colors">
-        @photon_log
-      </a>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+        <a href="mailto:phn.19890918@gmail.com" 
+           class="text-stone-300 hover:text-white transition-colors font-mono">
+          phn.19890918@gmail.com
+        </a>
+        <span class="hidden sm:block text-stone-600">•</span>
+        <a href="https://www.instagram.com/photon_log/" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="text-stone-300 hover:text-white transition-colors">
+          @photon_log
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="px-6 md:px-8 py-12 border-t border-stone-900">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-stone-600 text-sm">
+        FUJIFILM X-T50 & XF16-55mmF2.8 R LM WR II
+      </p>
     </div>
   </footer>
 
