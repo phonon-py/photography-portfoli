@@ -12,7 +12,8 @@ try {
   console.log('No photos found');
 }
 
-const latestPhotos = photos.slice(0, 6);
+// 写真を最新日時の昇順でソート
+photos.sort((a, b) => new Date(a.date) - new Date(b.date));
 ---
 
 <Layout title="Photography Portfolio | FUJIFILM X-T50">
@@ -58,14 +59,13 @@ const latestPhotos = photos.slice(0, 6);
       </h2>
       
       {photos.length > 0 ? (
-        <div id="masonry-grid" class="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
-          <!-- Initial photos -->
-          {photos.slice(0, 3).map((photo) => (
-            <div class="photo-item break-inside-avoid mb-4 group relative overflow-hidden bg-stone-900 rounded-lg">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {photos.map((photo) => (
+            <div class="group relative aspect-square overflow-hidden bg-stone-900 rounded-lg">
               <img
                 src={import.meta.env.PROD ? `/photography-portfoli/${photo.src}` : `/${photo.src}`}
                 alt={photo.alt}
-                class="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 loading="lazy"
                 onerror="console.log('Failed to load:', this.src)"
               />
@@ -109,165 +109,4 @@ const latestPhotos = photos.slice(0, 6);
 
   <!-- Debug Info (本番では削除) -->
   {!import.meta.env.PROD && <DebugInfo />}
-
-  <script define:vars={{ photos, baseUrl: import.meta.env.BASE_URL }}>
-    // Dynamic infinite scroll portfolio
-    let currentPhotoIndex = 3;
-    const displayedPhotos = new Set();
-    let isLoading = false;
-    let shuffledPhotos = [...photos];
-    
-    // Shuffle photos array
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-    
-    // Initialize with first 3 photos
-    photos.slice(0, 3).forEach((photo, index) => {
-      displayedPhotos.add(photo.id);
-    });
-    
-    // Shuffle the photos once at start
-    shuffledPhotos = shuffleArray([...photos]);
-    
-    function getNextPhoto() {
-      // Find next photo not yet displayed
-      for (let i = 0; i < shuffledPhotos.length; i++) {
-        if (!displayedPhotos.has(shuffledPhotos[i].id)) {
-          displayedPhotos.add(shuffledPhotos[i].id);
-          return shuffledPhotos[i];
-        }
-      }
-      
-      // If all photos used, reshuffle and start over
-      displayedPhotos.clear();
-      photos.slice(0, 3).forEach((photo) => {
-        displayedPhotos.add(photo.id);
-      });
-      shuffledPhotos = shuffleArray([...photos]);
-      
-      // Get first available photo after reset
-      for (let i = 0; i < shuffledPhotos.length; i++) {
-        if (!displayedPhotos.has(shuffledPhotos[i].id)) {
-          displayedPhotos.add(shuffledPhotos[i].id);
-          return shuffledPhotos[i];
-        }
-      }
-      
-      return photos[0]; // fallback
-    }
-    
-    function createPhotoElement(photo) {
-      const photoDiv = document.createElement('div');
-      photoDiv.className = 'photo-item break-inside-avoid mb-4 group relative overflow-hidden bg-stone-900 rounded-lg opacity-0 translate-y-8 transition-all duration-700';
-      
-      const img = document.createElement('img');
-      img.src = baseUrl.includes('photography-portfoli') ? `/photography-portfoli/${photo.src}` : `/${photo.src}`;
-      img.alt = photo.alt;
-      img.className = 'w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105';
-      img.loading = 'lazy';
-      img.onerror = () => console.log('Failed to load:', img.src);
-      
-      const overlay = document.createElement('div');
-      overlay.className = 'absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300';
-      
-      const overlayContent = document.createElement('div');
-      overlayContent.className = 'absolute bottom-0 left-0 right-0 p-4';
-      
-      const photoInfo = document.createElement('div');
-      photoInfo.className = 'text-xs font-mono text-stone-300 space-y-1';
-      
-      const settings = document.createElement('div');
-      settings.textContent = `${photo.settings.aperture} • ${photo.settings.shutter} • ISO ${photo.settings.iso}`;
-      
-      const focalLength = document.createElement('div');
-      if (photo.settings.focalLength) {
-        focalLength.textContent = photo.settings.focalLength;
-      }
-      
-      const date = document.createElement('div');
-      date.className = 'text-stone-400';
-      date.textContent = new Date(photo.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
-      
-      photoInfo.appendChild(settings);
-      if (photo.settings.focalLength) {
-        photoInfo.appendChild(focalLength);
-      }
-      photoInfo.appendChild(date);
-      
-      overlayContent.appendChild(photoInfo);
-      overlay.appendChild(overlayContent);
-      
-      photoDiv.appendChild(img);
-      photoDiv.appendChild(overlay);
-      
-      return photoDiv;
-    }
-    
-    function loadNewPhotos() {
-      if (isLoading) return;
-      isLoading = true;
-      
-      const grid = document.getElementById('masonry-grid');
-      if (!grid) return;
-      
-      // Add only 1 photo at a time for smooth scrolling experience
-      const photo = getNextPhoto();
-      const photoElement = createPhotoElement(photo);
-      grid.appendChild(photoElement);
-      
-      // Animate in with smoother transition
-      setTimeout(() => {
-        photoElement.style.opacity = '1';
-        photoElement.style.transform = 'translateY(0)';
-      }, 100);
-      
-      setTimeout(() => {
-        isLoading = false;
-      }, 600);
-    }
-    
-    // Scroll event listener
-    function handleScroll() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      
-      // Load new photos when 90% scrolled for smoother experience
-      if (scrollTop + windowHeight >= documentHeight * 0.9) {
-        loadNewPhotos();
-      }
-    }
-    
-    // Smooth parallax effect on scroll
-    function handleParallax() {
-      const scrolled = window.pageYOffset;
-      const heroSection = document.querySelector('section');
-      
-      if (heroSection) {
-        heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
-      }
-      
-      // Add subtle movement to photo items
-      const photoItems = document.querySelectorAll('.photo-item');
-      photoItems.forEach((item, index) => {
-        const speed = 0.1 + (index % 3) * 0.05;
-        item.style.transform = `translateY(${scrolled * speed}px)`;
-      });
-    }
-    
-    // Initialize
-    window.addEventListener('scroll', () => {
-      handleScroll();
-      requestAnimationFrame(handleParallax);
-    });
-    
-    // Load some initial photos after page load with staggered timing
-    setTimeout(loadNewPhotos, 1500);
-    setTimeout(loadNewPhotos, 3000);
-  </script>
 </Layout>
