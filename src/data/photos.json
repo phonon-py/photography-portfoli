@@ -1,5 +1,28 @@
 [
   {
+    "id": "aezk8xhek",
+    "filename": "DSCF0897",
+    "src": "images/DSCF0897.jpg",
+    "srcWebP": "images/DSCF0897.webp",
+    "thumbnail": "images/thumbs/DSCF0897.jpg",
+    "alt": "DSCF0897",
+    "camera": "FUJIFILM X-T50",
+    "lens": "XF16-55mmF2.8 R LM WR II",
+    "settings": {
+      "aperture": "f/2.8",
+      "shutter": "1/60s",
+      "iso": 2500,
+      "focalLength": "55mm"
+    },
+    "dimensions": {
+      "width": 4936,
+      "height": 6170
+    },
+    "date": "2025-07-13T23:05:52.068Z",
+    "tags": [],
+    "processed": "2025-07-13T23:05:52.069Z"
+  },
+  {
     "id": "g1s95ux1s",
     "filename": "DSCF0857",
     "src": "images/DSCF0857.jpg",
